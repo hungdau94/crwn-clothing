@@ -2,7 +2,7 @@ import React from 'react';
 import "./signin.styles.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {signInWithGoogle} from "../../firebase/firebase.util";
+import {auth, signInWithGoogle} from "../../firebase/firebase.util";
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -13,7 +13,6 @@ class SignIn extends React.Component {
             "password": ''
         }
     }
-
 
     render() {
         return (
@@ -26,7 +25,6 @@ class SignIn extends React.Component {
                                label="Email"
                                value={this.state.email}
                                handleChange={this.handleChange}
-                               oninvalid={() => this.setCustomValidity('Quý khách cần địa chỉ email hợp lệ')}
                     />
 
                     <FormInput name="password"
@@ -35,12 +33,11 @@ class SignIn extends React.Component {
                                value={this.state.password}
                                required
                                handleChange={this.handleChange}
-                               label='password'
                     />
                     <div className='buttons'>
 
                         <CustomButton type="submit" value="Submit Form"> SIGN IN </CustomButton>
-                        <CustomButton onClick={() => signInWithGoogle()} isGoogleSignin
+                        <CustomButton type='button' onClick={() => signInWithGoogle()} isGoogleSignin
                                       value='Sign in with google'> SIGN IN With
                             Google </CustomButton>
                     </div>
@@ -54,9 +51,17 @@ class SignIn extends React.Component {
         this.setState({[name]: value});
     }
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.setState({email: "", "password": ''})
+    handleSubmit = async event => {
+        event.preventDefault();
+        const {email, password} = this.state;
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            this.setState({"email":'', "password": ''});
+
+        } catch (error) {
+            console.log("Login failed. Please check your email and password", error)
+        }
     }
 };
 
