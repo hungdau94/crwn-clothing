@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-
 const config = {
     apiKey: "AIzaSyCzePWaThUa6aHbza7Fx30rSlcnu7oVfjo",
     authDomain: "crwn-clothing-c50da.firebaseapp.com",
