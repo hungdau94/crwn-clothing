@@ -15,7 +15,7 @@ const Header = ({currentUser}) => (
             {
                 currentUser ?
                     <p className='option'> Hi, {currentUser.displayName}</p> :
-                    ''
+                ''
             }
 
             <Link className='option' to='/shop'>
@@ -34,7 +34,7 @@ const Header = ({currentUser}) => (
 
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({ // get data from userReducer
     currentUser: state.user.currentUser
 });
 
