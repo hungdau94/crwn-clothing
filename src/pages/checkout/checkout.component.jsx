@@ -26,7 +26,7 @@ const CheckoutPage = ({cartItems}) => {
                 </div>
             </div>
             {cartItems.length
-                ? cartItems.map(cartIem => (<CheckoutItem cartItem={cartIem}/>))
+                ? cartItems.map(cartItem => (<CheckoutItem key={cartItem.id} cartItem={cartItem}/>))
                 : 'cart is empty'.toUpperCase()
             }
             <div className='total'>
