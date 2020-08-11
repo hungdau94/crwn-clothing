@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom'
 import './App.css';
 import HomePage from './pages/homepage/homepage.component.jsx';
-import ShopPage from "./pages/hats/shoppage.component";
+import ShopPage from "./pages/shop/shoppage.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/signin-and-signup-page/signin-and-signup-page.component";
 import {auth, createUserProfileDocument} from "./firebase/firebase.util"
@@ -52,8 +52,8 @@ class App extends React.Component {
         );
     }
 }
-
-const mapStateToProps = ({user}) => ({ //user refer to userReducer state. In short user = state, but it was
+//user refer to userReducer. In short user = state, but it was
+const mapStateToProps = ({user}) => ({
     currentUser: user.currentUser
 });
 

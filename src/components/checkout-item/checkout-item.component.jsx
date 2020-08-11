@@ -10,6 +10,7 @@ import {addItem, clearItemFromCart, removeItem} from "../../redux/cart/cart.acti
  */
 const CheckoutItem = ({cartItem, addItem, removeItem, clearItem}) => {
     const { name, imageUrl, price, quantity} = cartItem;
+    let fullPrice = price * quantity;
     return (
         <div className='checkout-item'>
             <div className='image-container'>
@@ -21,7 +22,7 @@ const CheckoutItem = ({cartItem, addItem, removeItem, clearItem}) => {
                 <span className='value'>{quantity}</span>
                 <div className='arrow' onClick={() => addItem(cartItem)}>&#10095;</div>
             </div>
-            <div className='price'>{price}</div>
+            <div className='price'>{fullPrice}$</div>
             <div className='remove-button' onClick={() => clearItem(cartItem)}>&#10005;</div>
         </div>
     )
