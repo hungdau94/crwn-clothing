@@ -4,8 +4,13 @@ import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
 import {selectCartItems, selectCartItemsTotal} from "../../redux/cart/cart.selectors";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
+import CheckoutForm from "../../components/stripe-button/stripe-checkout-form.component";
+
 
 const CheckoutPage = ({cartItems, cartItemsTotalPrice}) => {
+    const stripePromise = loadStripe('pk_test_51HFXmAKEBHmgXIT4ZJcpwz3n70E93L2bkYnTz9z8sfNKGFe46O1NZYtZOrbzEh5lzc2FBgh1pAKDaSzfxmS96VGa000LZncdIE');
     return (
         <div className='checkout-page'>
             <div className='checkout-header'>
@@ -32,7 +37,9 @@ const CheckoutPage = ({cartItems, cartItemsTotalPrice}) => {
             <div className='total'>
                 <span>Total: {cartItemsTotalPrice}$</span>
             </div>
-
+            <Elements stripe={stripePromise}>
+                <CheckoutForm price={cartItemsTotalPrice}></CheckoutForm>
+            </Elements>
         </div>
     )
 };
