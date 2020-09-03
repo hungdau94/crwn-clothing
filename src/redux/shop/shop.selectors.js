@@ -10,7 +10,7 @@ export const selectCollections = createSelector(
 
 export const selectCollectionsForPreview = createSelector(
     [selectCollections],
-    collections => Object.key(collections).map(key => collections[key])
+    collections => Object.keys(collections).map(key => collections[key])
 );
 
 // need memoize to cache because this function has params in it
