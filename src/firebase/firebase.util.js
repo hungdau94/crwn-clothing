@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+
 const config = {
     apiKey: "AIzaSyCzePWaThUa6aHbza7Fx30rSlcnu7oVfjo",
     authDomain: "crwn-clothing-c50da.firebaseapp.com",
@@ -21,17 +22,17 @@ provider.setCustomParameters({prompt: 'select_account'});
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export const createUserProfileDocument = async (userAuth, moreData) => {
-    if(!userAuth){
+    if (!userAuth) {
         return;
     }
     const ref = firestore.doc(`users/${userAuth.uid}`);
     const snapshot = await ref.get();
 
-    if(!snapshot.exists){
-        const { displayName , email } = userAuth;
+    if (!snapshot.exists) {
+        const {displayName, email} = userAuth;
         const createdAt = new Date();
 
-        try{
+        try {
             await ref.set({
                 displayName,
                 email,
@@ -43,7 +44,39 @@ export const createUserProfileDocument = async (userAuth, moreData) => {
         }
     }
     return ref;
+};
 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+
+    const batch = firestore.batch();
+    objectsToAdd.forEach(object => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, object);
+    });
+
+    return await batch.commit()
+};
+
+export const convertCollectionSnapshotToMap = (collectionsSnapshot) => {
+    const transformedCollection = collectionsSnapshot
+        .docs
+        .map(doc => {
+            const {title, items} = doc.data();
+            return {
+                routeName: encodeURI(title.toLowerCase()),
+                id: doc.id,
+                title,
+                items
+            }
+        });
+
+    console.log("TRANSFORMED-COLLECTION", transformedCollection)
+    return transformedCollection
+        .reduce((accumulator, collection) => {
+            accumulator[collection.title.toLowerCase()] = collection;
+            return accumulator;
+        }, {});
 };
 
 export default firebase;
