@@ -1,4 +1,3 @@
-import SHOP_DATA from "../../pages/shop/shoppage.data";
 import ShopActionTypes from "./shop.types";
 
 const INITIAL_STATE = {

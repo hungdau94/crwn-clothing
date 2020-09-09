@@ -23,7 +23,7 @@ class ShopPage extends React.Component {
         collectionRef.onSnapshot(collectionSnapshot => {
             const collectionsMap = convertCollectionSnapshotToMap(collectionSnapshot);
             updateCollections(collectionsMap);
-            this.setState({isLoading:false})
+            this.setState({isLoading: false})
         });
     }
 
@@ -32,8 +32,10 @@ class ShopPage extends React.Component {
         const {isLoading} = this.state;
         return (
             <div className='shop-page'>
-                <Route exact path={`${path}`} render={(props) => <CollectionOverviewWithSpinner isLoading={isLoading} {...props}/>}/>
-                <Route exact path={`${path}/:collectionId`} render={props => <CollectionPageWithSpinner isLoading={isLoading} {...props}/>} />
+                <Route exact path={`${path}`}
+                       render={(props) => <CollectionOverviewWithSpinner isLoading={isLoading} {...props}/>}/>
+                <Route exact path={`${path}/:collectionId`}
+                       render={props => <CollectionPageWithSpinner isLoading={isLoading} {...props}/>}/>
             </div>
         )
     }
