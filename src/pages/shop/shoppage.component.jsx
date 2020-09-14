@@ -20,11 +20,23 @@ class ShopPage extends React.Component {
         const {updateCollections} = this.props;
         const collectionRef = firestore.collection('collections');
 
-        collectionRef.onSnapshot(collectionSnapshot => {
-            const collectionsMap = convertCollectionSnapshotToMap(collectionSnapshot);
-            updateCollections(collectionsMap);
+        /* observable pattern
+        * collectionRef.onSnapshot(collectionSnapshot => {
+        *     const collectionsMap = convertCollectionSnapshotToMap(collectionSnapshot);
+        *     updateCollections(collectionsMap);
+        *     this.setState({isLoading: false})
+        * });
+        */
+
+        collectionRef.get().then(snapshot =>{
+            const collectionMap = convertCollectionSnapshotToMap(snapshot);
+            updateCollections(collectionMap);
             this.setState({isLoading: false})
-        });
+        })
+
+        /* Promise pattern
+
+         */
     }
 
     render() {
