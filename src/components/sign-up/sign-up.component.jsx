@@ -5,7 +5,7 @@ import {auth, createUserProfileDocument} from "../../firebase/firebase.util";
 
 class SignUp extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             displayName: "",
@@ -21,7 +21,7 @@ class SignUp extends React.Component {
 
 
         if(password !== confirmPassword){
-            alert("Password don't match")
+            alert("Password don't match");
             return;
         }
 

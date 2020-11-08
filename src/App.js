@@ -2,22 +2,23 @@ import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom'
 import './App.css';
 import HomePage from './pages/homepage/homepage.component.jsx';
-import ShopPage from "./pages/shop/shoppage.component";
+import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/signin-and-signup-page/signin-and-signup-page.component";
-import {addCollectionAndDocuments, auth, createUserProfileDocument} from "./firebase/firebase.util"
+import {auth, createUserProfileDocument} from "./firebase/firebase.util"
 import {connect} from "react-redux";
 import {setCurrentUser} from "./redux/user/user.actions";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import {selectCurrentUser} from "./redux/user/user.selectors";
 import {createStructuredSelector} from "reselect";
+import {fetchCollectionsStartAsync} from "./redux/shop/shop.actions";
 
 
 class App extends React.Component {
     unsubscribeFromAuth = null;
 
     componentDidMount() {
-        const {setCurrentUser} = this.props;
+        const {fetchCollectionsStartAsync, setCurrentUser} = this.props;
         this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
             if (user) {
                 const userRef = await createUserProfileDocument(user);
@@ -31,6 +32,8 @@ class App extends React.Component {
             }
             setCurrentUser(user)
         });
+
+        fetchCollectionsStartAsync();
     }
 
     componentWillUnmount() {
@@ -62,7 +65,8 @@ const mapStateToProps = createStructuredSelector({
 
 
 const mapDispatchToProps = dispatch => ({ // setting up stuffs
-    setCurrentUser: user => dispatch(setCurrentUser(user))
+    setCurrentUser: user => dispatch(setCurrentUser(user)),
+    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
 });
 
 

@@ -25,5 +25,8 @@ yarn-error.log*
 # IDE
 .idea/
 
+# Personal notes
+.notes/
+
 #firebase
 firebase-debug.log
