@@ -1,68 +1,59 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import "./signin.styles.scss";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {auth, signInWithGoogle} from "../../firebase/firebase.util";
+import {emailSignInStart, googleSignInStart} from "../../redux/user/user.actions";
 
-class SignIn extends React.Component {
-    constructor(props) {
-        super(props);
+const SignIn = ({emailSignInStart, googleSignInStart}) => {
+    const [userCredential, setCredential] = useState({email: '', password: ''});
+    const {email, password} = userCredential;
 
-        this.state = {
-            "email": '',
-            "password": ''
-        }
-    }
-
-    render() {
-        return (
-            <div className='sign-in'>
-                <h2>I already have an account</h2>
-                <span>Sign in with your email and password</span>
-                <form onSubmit={this.handleSubmit}>
-                    <FormInput name="email"
-                               type="email"
-                               label="Email"
-                               value={this.state.email}
-                               handleChange={this.handleChange}
-                    />
-
-                    <FormInput name="password"
-                               type="password"
-                               label="Password"
-                               value={this.state.password}
-                               required
-                               handleChange={this.handleChange}
-                    />
-                    <div className='buttons'>
-
-                        <CustomButton type="submit" value="Submit Form"> SIGN IN </CustomButton>
-                        <CustomButton type='button' onClick={() => signInWithGoogle()} isGoogleSignin
-                                      value='Sign in with google'> SIGN IN With
-                            Google </CustomButton>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-
-    handleChange = event => {
+    const handleChange = event => {
         const {value, name} = event.target;
-        this.setState({[name]: value});
-    }
+        setCredential({...userCredential, [name]: value});
+    };
 
-    handleSubmit = async event => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        const {email, password} = this.state;
+        emailSignInStart(email, password);
+    };
 
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            this.setState({"email":'', "password": ''});
+    return (
+        <div className='sign-in'>
+            <h2>I already have an account</h2>
+            <span>Sign in with your email and password</span>
+            <form onSubmit={handleSubmit}>
+                <FormInput name="email"
+                           type="email"
+                           label="Email"
+                           value={email}
+                           handleChange={handleChange}
+                />
 
-        } catch (error) {
-            console.log("Login failed. Please check your email and password", error)
-        }
-    }
+                <FormInput name="password"
+                           type="password"
+                           label="Password"
+                           value={password}
+                           required
+                           handleChange={handleChange}
+                />
+                <div className='buttons'>
+
+                    <CustomButton type="submit" value="Submit Form"> SIGN IN </CustomButton>
+                    <CustomButton type='button' onClick={googleSignInStart} isGoogleSignin
+                                  value='Sign in with google'> SIGN IN With
+                        Google </CustomButton>
+                </div>
+            </form>
+        </div>
+    )
 };
 
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) =>
+        dispatch(emailSignInStart({email, password}))
+});
+
+export default connect(null, mapDispatchToProps)(SignIn);
