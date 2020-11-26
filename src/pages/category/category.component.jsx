@@ -2,8 +2,7 @@ import React from 'react';
 
 import "./category.styles.scss"
 import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
-import {selectCollection, selectCollections} from "../../redux/shop/shop.selectors";
+import {selectCollection} from "../../redux/shop/shop.selectors";
 import CollectionItem from "../../components/collection-item/collection-item.component";
 
 const CategoryPage = ({collection: {items, title}}) => (
