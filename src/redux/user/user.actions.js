@@ -55,4 +55,7 @@ export const signUpFailure = (error) => ({
     payload: error
 });
 
+export const checkoutSuccess = () => ({
+    type: UserActionTypes.CHECKOUT_SUCCESS
+});
 

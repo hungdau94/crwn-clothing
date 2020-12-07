@@ -6,7 +6,7 @@ import {selectCartItems, selectCartItemsTotal} from "../../redux/cart/cart.selec
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import CheckoutForm from "../../components/stripe-button/stripe-checkout-form.component";
+import CheckoutForm from "../../components/checkout-stripe/checkout-stripe-form.component";
 
 const stripePromise = loadStripe('pk_test_51HFXmAKEBHmgXIT4ZJcpwz3n70E93L2bkYnTz9z8sfNKGFe46O1NZYtZOrbzEh5lzc2FBgh1pAKDaSzfxmS96VGa000LZncdIE');
 
@@ -24,26 +24,6 @@ const CheckoutPage = ({cartItems, cartItemsTotalPrice}) => {
             );
         }
     }, []);
-
-    const handleClick = async (event) => {
-        const stripe = await stripePromise;
-        const response = await fetch("/create-session", {
-            method: "POST",
-        });
-
-        const session = await response.json();
-        // When the customer clicks on the button, redirect them to Checkout.
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-        });
-
-        if (result.error) {
-            // If `redirectToCheckout` fails due to a browser or network
-            // error, display the localized error message to your customer
-            // using `result.error.message`.
-        }
-
-    };
 
     return (
         <div className='checkout-page'>
@@ -72,7 +52,7 @@ const CheckoutPage = ({cartItems, cartItemsTotalPrice}) => {
                 <span>Total: {cartItemsTotalPrice}$</span>
             </div>
             <Elements stripe={stripePromise}>
-                <CheckoutForm price={cartItemsTotalPrice}></CheckoutForm>
+                <CheckoutForm cartItems={cartItems} price={cartItemsTotalPrice}></CheckoutForm>
             </Elements>
         </div>
     )

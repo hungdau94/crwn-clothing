@@ -11,6 +11,7 @@ import {selectCurrentUser} from "./redux/user/user.selectors";
 import {createStructuredSelector} from "reselect";
 import {checkUserSession} from "./redux/user/user.actions";
 import AsyncFetch from "./test/customHooks/async.component";
+import TestComponent from "./test/general/test.component";
 
 
 const App = ({checkUserSession, currentUser}) => {
@@ -30,6 +31,7 @@ const App = ({checkUserSession, currentUser}) => {
                        render={() => currentUser ? (<Redirect to='/'/>) : (<SignInAndSignUpPage/>)}
                 />
                 <Route exect path='/testAsync' component={AsyncFetch} />
+                <Route exect path='/test' component={TestComponent} />
             </Switch>
         </div>
     );

@@ -64,7 +64,6 @@ export default function App() {
             // error, display the localized error message to your customer
             // using `result.error.message`.
         }
-
     };
 
     return message ? (
